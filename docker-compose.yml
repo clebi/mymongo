@@ -1,22 +1,23 @@
-mongo_data:
-  image: busybox
-  volumes:
-    - /data/db
-  command: sh -c "while true; do echo "hello"; sleep 1d; done;"
+version: '2'
 
-mongo:
-  image: mongo:3.2
-  ports:
-    - 27017:27017
-  expose:
-    - 270107
-  volumes_from:
-    - mongo_data
+services:
+  mongo:
+    image: mongo:3.2
+    ports:
+      - 27017:27017
+    expose:
+      - 270107
+    volumes:
+      - mongo_data:/data/db
 
-admin:
-  image: knickers/mongo-express:latest
-  links: 
-    - mongo
-  ports:
-    - 8081:8081
+  admin:
+    image: knickers/mongo-express:latest
+    links: 
+      - mongo
+    ports:
+      - 8990:8081
+
+volumes:
+  mongo_data:
+    driver: local
   
